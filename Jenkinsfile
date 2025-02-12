@@ -6,16 +6,16 @@ pipeline {
     agent any
     environment {
         strDockerTag = "${TODAY}_${BUILD_ID}"
-        strDockerImage ="yu3papa/cicd_guestbook:${strDockerTag}"
+        strDockerImage ="rockgis/cicd_guestbook:${strDockerTag}"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url:'https://github.com/yu3papa/guestbook.git'
+                git branch: 'master', url:'https://github.com/rockgis/guestbook.git'
 
                 dir('/root/sub-workspace/guestbook-config'){
-                    git branch: 'master', url:'https://github.com/yu3papa/guestbook-config.git'
+                    git branch: 'master', url:'https://github.com/rockgis/guestbook-config.git'
                 }
             }
         }
@@ -54,7 +54,7 @@ pipeline {
                         sed -i "s/cicd_guestbook:.*/cicd_guestbook:${strDockerTag}/g" guestbook/guestbook_deploy.yaml
                         git add guestbook/guestbook_deploy.yaml
                         git commit -m "[UPDATE] guestbook image tag - ${strDockerImage} (by jenkins)"
-                        git push "https://yu3papa:${GITHUB_ACCESS_TOKEN}@github.com/yu3papa/guestbook-config.git"
+                        git push "https://rockgis:${GITHUB_ACCESS_TOKEN}@github.com/rockgis/guestbook-config.git"
                     '''
                 }
             }
@@ -76,4 +76,3 @@ pipeline {
         }
     }
 }
-
